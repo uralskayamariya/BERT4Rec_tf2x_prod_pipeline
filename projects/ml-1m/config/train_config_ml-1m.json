@@ -1,0 +1,16 @@
+{
+    "project": "ml-1m",
+    "model_name": "final_model",
+    "hidden_size": 64,
+    "learning_rate": 0.0001,
+    "num_train_steps": 200000,
+    "batch_size_train": 32,
+    "batch_size_val": 64,
+    "max_seq_length": 200,
+    "max_predictions_per_seq": 20,
+    "training_time_limit_seconds": null,
+    "vocab_size": 3420,
+    "num_warmup_steps": 100,
+    "save_checkpoints_steps": 1000,
+    "fast_eval": true
+}

@@ -1,0 +1,55 @@
+stages:
+  data_processing_train_val_test:
+    cmd: python src/data_processing/data_processing_raw.py --task train_val_test
+    deps:
+      - src/data_processing/data_processing_raw.py
+
+  data_processing_train_val:
+    cmd: python src/data_processing/data_processing_raw.py --task train_val
+    deps:
+      - src/data_processing/data_processing_raw.py
+  
+  data_processing_test:
+    cmd: python src/data_processing/data_processing_raw.py --task test
+    deps:
+      - src/data_processing/data_processing_raw.py
+      
+  data_processing_inference:
+    cmd: python src/data_processing/data_processing_raw.py --task inference
+    deps:
+      - src/data_processing/data_processing_raw.py
+
+  data_processing_all_train_val_test:
+    cmd: python src/data_processing/data_processing_all.py --task train_val_test
+    deps:
+      - src/data_processing/data_processing_all.py
+
+  data_processing_all_train_val:
+    cmd: python src/data_processing/data_processing_all.py --task train_val
+    deps:
+      - src/data_processing/data_processing_all.py
+
+  data_processing_all_test:
+    cmd: python src/data_processing/data_processing_all.py --task test
+    deps:
+      - src/data_processing/data_processing_all.py
+
+  data_processing_all_inference:
+    cmd: python src/data_processing/data_processing_all.py --task inference
+    deps:
+      - src/data_processing/data_processing_all.py
+
+  train_val:
+    cmd: python src/train_test_inf/train_val.py
+    deps:
+      - src/train_test_inf/train_val.py
+
+  test:
+    cmd: python src/train_test_inf/test.py
+    deps:
+      - src/train_test_inf/test.py
+
+  inference:
+    cmd: python src/train_test_inf/inference.py
+    deps:
+      - src/train_test_inf/inference.py

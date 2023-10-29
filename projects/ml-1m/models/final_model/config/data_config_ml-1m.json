@@ -1,0 +1,13 @@
+{
+    "project": "ml-1m",
+    "max_seq_length": 200,
+    "masked_lm_prob": 0.2,
+    "max_predictions_per_seq": 20,
+    "mask_prob": 1.0,
+    "dupe_factor": 10,
+    "pool_size": 12,
+    "short_seq_prob": 0,
+    "hidden_size": 64,
+    "prop_sliding_window": 0.5,
+    "task": "train_val_test"
+}

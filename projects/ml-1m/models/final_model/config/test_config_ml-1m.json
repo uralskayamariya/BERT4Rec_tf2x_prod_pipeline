@@ -1,0 +1,9 @@
+{
+    "project": "ml-1m",
+    "model_name": "final_model",
+    "max_seq_length": 200,
+    "max_predictions_per_seq": 20,
+    "vocab_size": 3420,
+    "fast_eval": false,
+    "hidden_size": 64
+}

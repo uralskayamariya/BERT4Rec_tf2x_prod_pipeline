@@ -1,0 +1,7 @@
+[core]
+    remote = bert4rec
+    autostage = true
+['remote "bert4rec"']
+    url = s3://DVC/bert4rec
+    endpointurl = https://s3.local
+    ssl_verify = false

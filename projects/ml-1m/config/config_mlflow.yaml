@@ -1,0 +1,22 @@
+last_experiment_name: bert4rec_inference_2023-10-20 15:03:04.198528_master
+data_processing_raw_train_val_test:
+  experiment_name: bert4rec_inference_2023-10-20 15:03:04.198528_master
+  run_id: c410384c76944dd08ec10fd6537c76fd
+data_processing_all_train_val_test:
+  experiment_name: bert4rec_inference_2023-10-20 15:03:04.198528_master
+  run_id: b949bcf9701b4d45b3178f59493391c0
+train_val:
+  experiment_name: bert4rec_inference_2023-10-20 15:03:04.198528_master
+  run_id: 7d1079badccd4b88a8eb81f37b502fde
+data_processing_raw_inference:
+  experiment_name: bert4rec_inference_2023-10-20 15:03:04.198528_master
+  run_id: 6fc7a6e0bfed4fcd8d2f38022ead8d6c
+data_processing_all_inference:
+  experiment_name: bert4rec_inference_2023-10-20 15:03:04.198528_master
+  run_id: 324d037f21ca431e85ce212f9e8d0735
+inference:
+  experiment_name: bert4rec_inference_2023-10-20 15:03:04.198528_master
+  run_id: f19cd2b5dbd34f25a015a689d867b5d6
+test:
+  experiment_name: bert4rec_inference_2023-10-20 15:03:04.198528_master
+  run_id: c72327306d5941cf9b36c5bfcca17939

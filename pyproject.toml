@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "bert4rec"
+version = "0.0.1"
+description = "Predict next items in sequence with BERT4REC"
+authors = ["uralskaya_mv <uralskaya_mv@ekb.sima-land.ru>"]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<=3.10"
+numpy = "1.21.4"
+pandas = "1.5.3"
+dvc = "2.51.0"
+mlflow = "2.2.2"
+dvc-s3 = "2.21.0"
+tqdm = "4.65.0"
+ipykernel = "^6.22.0"
+tensorflow-gpu = "2.10"
+python-dotenv = "1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

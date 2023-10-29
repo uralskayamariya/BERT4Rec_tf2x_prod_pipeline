@@ -1,0 +1,97 @@
+stages:
+  data_processing_raw_train_val_test:
+    cmd: python src/data_processing/data_processing_raw.py --vocab_exist 0 --task train_val_test
+    deps:
+      - src/data_processing/data_processing_raw.py
+      - projects/{project}/data/external/{project}_train_val_test.pkl
+    outs:
+      - projects/{project}/data/interim/{project}_train_val_test.txt
+
+  data_processing_raw_train_val:
+    cmd: python src/data_processing/data_processing_raw.py --vocab_exist 0 --task train_val
+    deps:
+      - src/data_processing/data_processing_raw.py
+      - projects/{project}/data/external/{project}_train_val.pkl
+    outs:
+      - projects/{project}/data/interim/{project}_train_val.txt
+
+  data_processing_raw_test:
+    cmd: python src/data_processing/data_processing_raw.py --vocab_exist 1 --task test
+    deps:
+      - src/data_processing/data_processing_raw.py
+      - projects/{project}/data/external/{project}_test.pkl
+    outs:
+      - projects/{project}/data/interim/{project}_test.txt
+
+  data_processing_raw_inference:
+    cmd: python src/data_processing/data_processing_raw.py --vocab_exist 1 --task inference
+    deps:
+      - src/data_processing/data_processing_raw.py
+      - projects/{project}/data/external/{project}_inference.pkl
+      - projects/{project}/models/{model_name}
+    outs:
+      - projects/{project}/data/interim/{project}_inference.txt
+
+  data_processing_all_train_val_test:
+    cmd: python src/data_processing/data_processing_all.py --task train_val_test
+    deps:
+      - src/data_processing/data_processing_all.py
+      - projects/{project}/data/interim/{project}_train_val_test.txt
+    outs:
+      - projects/{project}/data/processed/{project}.train_val_test.train_val.tfrecord 
+      - projects/{project}/data/processed/{project}.train_val_test.test.tfrecord 
+      - projects/{project}/references/{project}.vocab  
+
+  data_processing_all_train_val:
+    cmd: python src/data_processing/data_processing_all.py --task train_val
+    deps:
+      - src/data_processing/data_processing_all.py
+      - projects/{project}/data/interim/{project}_train_val.txt
+    outs:
+      - projects/{project}/data/processed/{project}.train_val.tfrecord
+
+  data_processing_all_test:
+    cmd: python src/data_processing/data_processing_all.py --task test --vocab_filename projects/{project}/references/{project}.vocab
+    deps:
+      - src/data_processing/data_processing_all.py
+      - projects/{project}/data/interim/{project}_test.txt
+      - projects/{project}/references/{project}.vocab
+      - projects/{project}/models/{model_name}
+    outs:
+      - projects/{project}/data/processed/{project}.test.tfrecord 
+
+  data_processing_all_inference:
+    cmd: python src/data_processing/data_processing_all.py --task inference --vocab_filename projects/{project}/references/{project}.vocab
+    deps:
+      - src/data_processing/data_processing_all.py
+      - projects/{project}/data/interim/{project}_inference.txt
+      - projects/{project}/references/{project}.vocab
+      - projects/{project}/models/{model_name}
+    outs:
+      - projects/{project}/data/processed/{project}.inference.tfrecord
+
+
+  train_val:
+    cmd: python src/train_test_inf/train_val.py --model_name {model_name}
+    deps:
+      - src/train_test_inf/train_val.py
+      - projects/{project}/data/processed/{project}.train_val_test.train_val.tfrecord
+      - projects/{project}/references/{project}.vocab
+    outs:
+      - projects/{project}/models/{model_name}
+
+  test:
+    cmd: python src/train_test_inf/test.py --model_name {model_name}
+    deps:
+      - src/train_test_inf/test.py
+      - projects/{project}/data/processed/{project}.train_val_test.test.tfrecord
+      - projects/{project}/models/{model_name}
+      - projects/{project}/references/{project}.vocab
+    
+  inference:
+    cmd: python src/train_test_inf/inference.py --model_name {model_name}
+    deps:
+      - src/train_test_inf/inference.py
+      - projects/{project}/data/processed/{project}.inference.tfrecord
+      - projects/{project}/models/{model_name}
+      - projects/{project}/references/{project}.vocab

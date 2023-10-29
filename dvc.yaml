@@ -1,0 +1,106 @@
+stages:
+  data_processing_raw_train_val_test:
+    cmd: python src/data_processing/data_processing_raw.py --vocab_exist 0 --task
+      train_val_test
+    deps:
+      - src/data_processing/data_processing_raw.py
+      - projects/ml-1m/data/external/ml-1m_train_val_test.pkl
+    outs:
+      - projects/ml-1m/data/interim/ml-1m_train_val_test.txt
+
+  data_processing_raw_train_val:
+    cmd: python src/data_processing/data_processing_raw.py --vocab_exist 0 --task
+      train_val
+    deps:
+      - src/data_processing/data_processing_raw.py
+      - projects/ml-1m/data/external/ml-1m_train_val.pkl
+    outs:
+      - projects/ml-1m/data/interim/ml-1m_train_val.txt
+
+  data_processing_raw_test:
+    cmd: python src/data_processing/data_processing_raw.py --vocab_exist 1 --task
+      test
+    deps:
+      - src/data_processing/data_processing_raw.py
+      - projects/ml-1m/data/external/ml-1m_test.pkl
+    outs:
+      - projects/ml-1m/data/interim/ml-1m_test.txt
+
+  data_processing_raw_inference:
+    cmd: python src/data_processing/data_processing_raw.py --vocab_exist 1 --task
+      inference
+    deps:
+      - src/data_processing/data_processing_raw.py
+      - projects/ml-1m/data/external/ml-1m_inference.pkl
+      - projects/ml-1m/models/final_model
+    outs:
+      - projects/ml-1m/data/interim/ml-1m_inference.txt
+
+  data_processing_all_train_val_test:
+    cmd: python src/data_processing/data_processing_all.py --task train_val_test
+    deps:
+      - src/data_processing/data_processing_all.py
+      - projects/ml-1m/data/interim/ml-1m_train_val_test.txt
+    outs:
+      - projects/ml-1m/data/processed/ml-1m.train_val_test.train_val.tfrecord
+      - projects/ml-1m/data/processed/ml-1m.train_val_test.test.tfrecord
+      - projects/ml-1m/references/ml-1m.vocab
+
+  data_processing_all_train_val:
+    cmd: python src/data_processing/data_processing_all.py --task train_val
+    deps:
+      - src/data_processing/data_processing_all.py
+      - projects/ml-1m/data/interim/ml-1m_train_val.txt
+    outs:
+      - projects/ml-1m/data/processed/ml-1m.train_val.tfrecord
+
+  data_processing_all_test:
+    cmd: python src/data_processing/data_processing_all.py --task test --vocab_filename
+      projects/ml-1m/references/ml-1m.vocab
+    deps:
+      - src/data_processing/data_processing_all.py
+      - projects/ml-1m/data/interim/ml-1m_test.txt
+      - projects/ml-1m/references/ml-1m.vocab
+      - projects/ml-1m/models/final_model
+    outs:
+      - projects/ml-1m/data/processed/ml-1m.test.tfrecord
+
+  data_processing_all_inference:
+    cmd: python src/data_processing/data_processing_all.py --task inference --vocab_filename
+      projects/ml-1m/references/ml-1m.vocab
+    deps:
+      - src/data_processing/data_processing_all.py
+      - projects/ml-1m/data/interim/ml-1m_inference.txt
+      - projects/ml-1m/references/ml-1m.vocab
+      - projects/ml-1m/models/final_model
+    outs:
+      - projects/ml-1m/data/processed/ml-1m.inference.tfrecord
+
+
+  train_val:
+    cmd: python src/train_test_inf/train_val.py --model_name final_model
+    deps:
+      - src/train_test_inf/train_val.py
+      - projects/ml-1m/data/processed/ml-1m.train_val_test.train_val.tfrecord
+      - projects/ml-1m/references/ml-1m.vocab
+    outs:
+      - projects/ml-1m/models/final_model
+
+  test:
+    cmd: python src/train_test_inf/test.py --model_name final_model
+    deps:
+      - src/train_test_inf/test.py
+      - projects/ml-1m/data/processed/ml-1m.train_val_test.test.tfrecord
+      - projects/ml-1m/models/final_model
+      - projects/ml-1m/references/ml-1m.vocab
+
+  inference:
+    cmd: python src/train_test_inf/inference.py --model_name final_model
+    deps:
+      - src/train_test_inf/inference.py
+      - projects/ml-1m/data/processed/ml-1m.inference.tfrecord
+      - projects/ml-1m/models/final_model
+      - projects/ml-1m/references/ml-1m.vocab
+    outs:
+      - projects/ml-1m/results/final_model/df_next_sids_embs.pkl
+      - projects/ml-1m/results/final_model/df_next_sids.pkl
